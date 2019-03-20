@@ -58,6 +58,20 @@ module.exports = {
             callback(err);
           });
         });
-      }
+      },
+    getPosts(id, callback) {
+        return Topic.findById(id, {
+            include: [{
+                model: Post,
+                as: "posts"
+            }]
+        })
+        .then((topic) => {
+            callback(null, topic);
+        })
+        .catch((err) => {
+            callback(err);
+        })
+    }
 
 }
