@@ -105,4 +105,17 @@ describe("Flair", () => {
         });
    
     });
+    describe("#getPost()", () => {
+
+     it("should return the associated post", (done) => {
+
+       this.flair.getPost()
+       .then((associatedPost) => {
+         expect(associatedPost.title).toBe("My first visit to Proxima Centauri b");
+         done();
+       });
+
+     });
+
+   });
   });
