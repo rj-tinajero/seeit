@@ -16,7 +16,6 @@ describe("routes : flairs", () => {
 
     sequelize.sync({force: true}).then((res) => {
 
-//#1
       Topic.create({
         title: "Winter Games",
         description: "Post your Winter Games stories."
@@ -28,18 +27,18 @@ describe("routes : flairs", () => {
           title: "Snowball Fighting",
           body: "So much snow!",
           topicId: this.topic.id
-        })
-        .then((post) => {
+          })
+          .then((post) => {
           this.post = post;
           Flair.create({
               name: "Favorite",
               color: "Blue",
               postId: this.post.id
           })
-        .then((flair) => {
+            .then((flair) => {
             this.flair = flair;
             done();
-        })
+            })
         })
         .catch((err) => {
           console.log(err);
@@ -52,7 +51,7 @@ describe("routes : flairs", () => {
 
   describe("GET /topics/:topicId/posts/:postId/new", () => {
       it("should render a new flair form", (done) => {
-          request.get(`${base}/${this.topic.id}/posts/${this.post.id}/new`, (err, res, body) => {
+          request.get(`${base}/${this.topic.id}/posts/${this.post.topicId}/new`, (err, res, body) => {
               expect(err).toBeNull();
               expect(body).toContain("New Flair");
               done();
