@@ -3,6 +3,6 @@ const router = express.Router();
 
 const flairController = require("../controllers/flairController")
 
-router.get("/flairs/new", flairController.new);
+router.get("/topics/:topicId/posts/new", flairController.new);
 
 module.exports = router;
