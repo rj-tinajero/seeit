@@ -49,7 +49,7 @@ describe("routes : flairs", () => {
 
   });
 
-  describe("GET /topics/:topicId/posts/new", () => {
+  describe("GET /topics/:topicId/posts/:postId/new", () => {
       it("should render a new flair form", (done) => {
           request.get(`${base}/${this.topic.id}/posts/${this.post.id}/new`, (err, res, body) => {
             console.log(body);
@@ -60,4 +60,40 @@ describe("routes : flairs", () => {
       });
   });
 
+  describe("POST /topics/:topicId/posts/:postId/create", () => {
+    it("should create a new flair and redirect", (done) => {
+      const options = {
+        url: `${base}/${this.topic.id}/posts/${this.post.id}/create`,
+        form: {
+          name: "News",
+          color: "Green"
+        }
+      };
+      request.post(options,
+        (err, res, body) => {
+          Flair.findOne({where: {name: "News"}})
+          .then((flair) => {
+            expect(flair).not.toBeNull();
+            expect(flair.name).toBe("News");
+            expect(flair.color).toBe("Green");
+            expect(flair.postId).not.toBeNull();
+            done();
+          })
+          .catch((err) => {
+            console.log(err);
+            done();
+          });
+        });
+    });
+  });
+
+  describe("GET /topics/:topicId/posts/:postId", () => {
+    it("should render a view with the selected flair", (done) => {
+      request.get(`${base}/${this.topic.id}/posts/${this.post.id}`, (err, res, body) => {
+        expect(err).toBeNull;
+        expect(body).toContain("Favorite");
+        done();
+      });
+    });
+  });
 });
