@@ -96,4 +96,22 @@ describe("routes : flairs", () => {
       });
     });
   });
+
+  describe("POST /topics/:topicId/posts/:postId/destroy", () => {
+
+    it("should delete the flair with the associated ID", (done) => {
+      expect(flair.postId).toBe(1);
+
+      request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
+        Flair.findById(1)
+        .then((flair) => {
+          expect(err).toBeNull();
+          expect(flair).toBeNull();
+          done();
+        })
+      });
+
+    });
+
+  });
 });

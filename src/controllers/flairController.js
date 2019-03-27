@@ -6,15 +6,15 @@ module.exports = {
     },
     create(req, res, next) {
         let newFlair = {
-            name: req.body.name,
-            color: req.body.color,
+            name: req.body.title,
+            color: req.body.body,
             postId: req.params.postId
         };
         flairQueries.addFlair(newFlair, (err, flair) => {
             if(err) {
                 res.redirect(500, "/posts/:postId");
             } else {
-                res.redirect(303, `/topics/${newFlair.postId}/posts/${post.id}`);
+                res.redirect(303, `/topics/${newFlair.postId}/posts/${flair.id}`);
             }
         });
     },
@@ -26,5 +26,15 @@ module.exports = {
                 res.render("posts/show", {flair});
             }
         });
+    },
+    destroy(req, res, next) {
+        flairQueries.deleteFlair(req.params.id, (err, deletedRecordsCount) => {
+            console.log(deletedRecordsCount);
+            if(err) {
+                res.redirect(500,`/topics/${req.params.topicId}/posts/${req.params.id}`)
+            } else {
+                res.redirect(303, `/topics/${req.params.topicId}/posts/${req.params.id}`)
+            }
+        })
     }
 }
