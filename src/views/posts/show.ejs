@@ -12,13 +12,14 @@
         <% post.flairs.forEach((flair) => { %>
           <li class="list-group-item">
              <h6><%= flair.name %><%= flair.color %> </h6>
+             <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= flair.postId %>/destroy" method="post">
+              <button type="submit" class="btn btn-danger">Delete Flair</button>
+            </form>
           </li>
         <% }) %>
       </ul>
       <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/new" class="btn btn-success">Add Flair</a>
-      <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
-        <button type="submit" class="btn btn-danger">Delete Flair</button>
-      </form>
+      
       
       
       <p><%= post.body %></p>
