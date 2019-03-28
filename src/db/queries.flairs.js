@@ -21,9 +21,10 @@ module.exports = {
             callback(err);
         })
     },
-    deleteFlair(postId, callback) {
+    deleteFlair(id, callback) {
+        console.log(id);
         return Flair.destroy({
-            where: { postId }
+            where: { id }
         })
         .then((deletedRecordsCount) => {
             console.log("???", deletedRecordsCount);
