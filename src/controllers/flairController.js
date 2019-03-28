@@ -28,7 +28,8 @@ module.exports = {
         });
     },
     destroy(req, res, next) {
-        flairQueries.deleteFlair(req.params.id, (err, deletedRecordsCount) => {
+        console.log(req.params);
+        flairQueries.deleteFlair(req.params.postId, (err, deletedRecordsCount) => {
             if(err) {
                 res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.postId}`)
             } else {
