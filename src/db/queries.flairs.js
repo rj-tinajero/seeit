@@ -21,12 +21,12 @@ module.exports = {
             callback(err);
         })
     },
-    deleteFlair(id, callback) {
+    deleteFlair(postId, callback) {
         return Flair.destroy({
-            where: { id }
+            where: { postId }
         })
         .then((deletedRecordsCount) => {
-            console.log(deletedRecordsCount);
+            console.log("???", deletedRecordsCount);
             callback(null, deletedRecordsCount);
         })
         .catch((err) => {
