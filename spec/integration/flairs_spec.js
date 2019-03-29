@@ -72,11 +72,13 @@ describe("routes : flairs", () => {
       request.post(options,
         (err, res, body) => {
           Flair.findOne({where: {name: "News"}})
-          .then((flair) => {
-            expect(flair).not.toBeNull();
-            expect(flair.name).toBe("News");
-            expect(flair.color).toBe("Green");
-            expect(flair.postId).not.toBeNull();
+          .then((post) => {
+            console.log(flair);
+
+            expect(post).not.toBeNull();
+            expect(post.name).toBe("News");
+            expect(post.body).toBe("Green");
+            expect(post.postId).not.toBeNull();
             done();
           })
           .catch((err) => {
@@ -85,8 +87,8 @@ describe("routes : flairs", () => {
           });
         });
     });
-  });
 
+   
   describe("GET /topics/:topicId/posts/:postId", () => {
     it("should render a view with the selected flair", (done) => {
       request.get(`${base}/${this.topic.id}/posts/${this.post.id}`, (err, res, body) => {
@@ -97,12 +99,12 @@ describe("routes : flairs", () => {
     });
   });
 
-  describe("POST /topics/:topicId/posts/:postId/destroy", () => {
+  describe("POST /topicsFlair/:topicId/posts/:postId/destroy", () => {
 
     it("should delete the flair with the associated ID", (done) => {
-      expect(flair.postId).toBe(1);
+      expect(this.flair.id).toBe(1);
 
-      request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
+      request.post(`${base}Flair/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
         Flair.findById(1)
         .then((flair) => {
           expect(err).toBeNull();
@@ -114,4 +116,19 @@ describe("routes : flairs", () => {
     });
 
   });
+
+  describe("GET /topicsFlair/:topicId/posts/:postId/edit", () => {
+
+    it("should render a view with an edit flair form", (done) => {
+      request.get(`${base}Flair/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
+        expect(err).toBeNull();
+        expect(body).toContain("Edit Flair");
+        expect(body).toContain("Favorite");
+        done();
+      });
+    });
+
+  });
+});
+
 });

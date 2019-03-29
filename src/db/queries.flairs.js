@@ -13,7 +13,7 @@ module.exports = {
         })
     },
     getFlair(id, callback) {
-        return Flair.findbyId(id)
+        return Flair.findById(id)
         .then((flair) => {
             callback(null, flair);
         })
@@ -21,10 +21,10 @@ module.exports = {
             callback(err);
         })
     },
-    deleteFlair(id, callback) {
-        console.log(id);
+    deleteFlair(postId, callback) {
+        console.log(postId);
         return Flair.destroy({
-            where: { id }
+            where: { postId }
         })
         .then((deletedRecordsCount) => {
             console.log("???", deletedRecordsCount);

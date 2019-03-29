@@ -9,9 +9,10 @@
     <main class="container">
       <h1><%= post.title %></h1>
       <ul class="list-group">
-        <% post.flairs.forEach((flair) => { %>
+        <% post.flairs.forEach((flair) => {  %>
           <li class="list-group-item">
              <h6><%= flair.name %><%= flair.color %> </h6>
+             <a href="/topicsFlair/<%= post.topicId %>/posts/<%= flair.postId %>/edit" class="btn btn-warning">Edit</a>
              <form style="display:initial" action="/topicsFlair/<%= post.topicId %>/posts/<%= flair.postId %>/destroy" method="post">
               <button type="submit" class="btn btn-danger">Delete Flair</button>
             </form>

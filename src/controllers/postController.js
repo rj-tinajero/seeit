@@ -39,6 +39,7 @@ module.exports = {
       },
       edit(req, res, next){
         postQueries.getPost(req.params.id, (err, post) => {
+          console.log("postController");
           if(err || post == null){
             res.redirect(404, "/");
           } else {

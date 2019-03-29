@@ -14,12 +14,25 @@ module.exports = {
             if(err) {
                 res.redirect(500, "/posts/:postId");
             } else {
-                res.redirect(303, `/topics/${newFlair.postId}/posts/${flair.id}`);
+                res.redirect(303, `/topics/${newFlair.postId}/posts/${newFlair.postId}`);
             }
         });
     },
+
+    edit(req, res, next) {
+        flairQueries.getFlair(req.params.postId, (err, flair) => {
+            console.log("flairController");
+            if(err || flair == null) {
+                res.redirect(404, "/");
+            } else {
+                res.redirect(303, "/topicsFlair/:topicId/posts/:postId/edit")
+            }
+        }) 
+    },
     show(req, res, next) {
-        flairQueries.getFlair(req.params.id, (err, flair) => {
+        console.log(res.params.postId);
+        flairQueries.getFlair(req.params.postId, (err, flair) => {
+            console.log(req.params);
             if(err || flair == null) {
                 res.redirect(404, "/");
             } else {
