@@ -12,7 +12,7 @@
         <% post.flairs.forEach((flair) => {  %>
           <li class="list-group-item">
              <h6><%= flair.name %><%= flair.color %> </h6>
-             <a href="/topicsFlair/<%= post.topicId %>/posts/<%= flair.postId %>/edit" class="btn btn-warning">Edit</a>
+             <a href="/topics/<%= post.topicId %>/posts/<%= flair.postId %>/flairs/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
              <form style="display:initial" action="/topicsFlair/<%= post.topicId %>/posts/<%= flair.postId %>/destroy" method="post">
               <button type="submit" class="btn btn-danger">Delete Flair</button>
             </form>

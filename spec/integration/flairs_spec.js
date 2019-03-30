@@ -117,13 +117,13 @@ describe("routes : flairs", () => {
 
   });
 
-  describe("GET /topicsFlair/:topicId/posts/:postId/edit", () => {
+  describe("GET /topics/:topicId/posts/:postId/flairs/:id/edit", () => {
 
     it("should render a view with an edit flair form", (done) => {
-      request.get(`${base}Flair/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
+      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("Edit Flair");
-        expect(body).toContain("Favorite");
+        expect(body).toContain("Flair Name");
+        expect(body).toContain("Flair Name");
         done();
       });
     });

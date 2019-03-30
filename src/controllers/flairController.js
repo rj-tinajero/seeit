@@ -20,12 +20,12 @@ module.exports = {
     },
 
     edit(req, res, next) {
-        flairQueries.getFlair(req.params.postId, (err, flair) => {
+        flairQueries.getFlair(req.params.id, (err, flair) => {
             console.log("flairController");
             if(err || flair == null) {
                 res.redirect(404, "/");
             } else {
-                res.redirect(303, "/topicsFlair/:topicId/posts/:postId/edit")
+                res.render("flairs/edit", {flair})
             }
         }) 
     },
