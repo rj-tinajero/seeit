@@ -10,8 +10,8 @@
       
       <h1><%= flair.name %></h1>
       <p><%= flair.color %></p>
-      <a href="/topics/<%= flair.postId %>/posts/<%= flair.postId %>/flair/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
-      <form style="display:initial" action="/topicsFlair/<%= flair.postId %>/posts/<%= flair.postId %>/destroy" method="post">
+      <a href="/topics/<%= topicId %>/posts/<%= flair.postId %>/flair/<%= flair.id %>/edit" class="btn btn-warning">Edit</a>
+      <form style="display:initial" action="/topics/<%= topicId %>/posts/<%= flair.postId %>/flair/<%= flair.id %>/destroy" method="post">
         <button type="submit" class="btn btn-danger">Delete Flair</button>
       </form>
       

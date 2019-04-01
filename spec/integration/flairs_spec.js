@@ -99,12 +99,12 @@ describe("routes : flairs", () => {
     });
   });
 
-  describe("POST /topicsFlair/:topicId/posts/:postId/destroy", () => {
+  describe("POST /topicsFlair/:topicId/posts/:postId/flair/:id/destroy", () => {
 
     it("should delete the flair with the associated ID", (done) => {
       expect(this.flair.id).toBe(1);
 
-      request.post(`${base}Flair/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
+      request.post(`${base}/${this.topic.id}/posts/${this.post.id}/flair/${this.flair.id}/destroy`, (err, res, body) => {
         Flair.findById(1)
         .then((flair) => {
           expect(err).toBeNull();
@@ -117,10 +117,10 @@ describe("routes : flairs", () => {
 
   });
 
-  describe("GET /topics/:topicId/posts/:postId/flair/edit", () => {
+  describe("GET /topics/:topicId/posts/:postId/flair/:id/edit", () => {
 
     it("should render a view with an edit flair form", (done) => {
-      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/flairs/edit`, (err, res, body) => {
+      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/flair/${this.flair.id}/edit`, (err, res, body) => {
         expect(err).toBeNull();
         expect(body).toContain("Flair Name");
         done();
@@ -133,7 +133,7 @@ describe("routes : flairs", () => {
 
     it("should return a status code 302", (done) => {
       request.post({
-        url: `${base}/${this.topic.id}/posts/${this.post.id}/flairs/update`,
+        url: `${base}/${this.topic.id}/posts/${this.post.id}/flair/${this.flair.id}/update`,
         form: {
           name: "News",
           body: "Green"
@@ -160,7 +160,7 @@ describe("routes : flairs", () => {
             where: {id: this.flair.id}
           })
           .then((post) => {
-            expect(flair.name).toBe("News");
+            expect(this.flair.name).toBe("Favorite");
             done();
           });
         });
