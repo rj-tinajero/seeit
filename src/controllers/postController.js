@@ -29,7 +29,6 @@ module.exports = {
       },
       destroy(req, res, next){
         postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
-          console.log(deletedRecordsCount);
           if(err){
             res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
           } else {
@@ -49,7 +48,6 @@ module.exports = {
       },
       update(req, res, next){
         postQueries.updatePost(req.params.id, req.body, (err, post) => {
-          console.log("postController");
           if(err || post == null){
             res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
           } else {

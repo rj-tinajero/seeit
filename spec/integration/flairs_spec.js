@@ -117,15 +117,53 @@ describe("routes : flairs", () => {
 
   });
 
-  describe("GET /topics/:topicId/posts/:postId/flairs/:id/edit", () => {
+  describe("GET /topics/:topicId/posts/:postId/flair/edit", () => {
 
     it("should render a view with an edit flair form", (done) => {
-      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
+      request.get(`${base}/${this.topic.id}/posts/${this.post.id}/flairs/edit`, (err, res, body) => {
         expect(err).toBeNull();
-        expect(body).toContain("Flair Name");
         expect(body).toContain("Flair Name");
         done();
       });
+    });
+
+  });
+
+  describe("POST /topics/:topicId/posts/:id/flairs/update", () => {
+
+    it("should return a status code 302", (done) => {
+      request.post({
+        url: `${base}/${this.topic.id}/posts/${this.post.id}/flairs/update`,
+        form: {
+          name: "News",
+          body: "Green"
+        }
+      }, (err, res, body) => {
+        expect(res.statusCode).toBe(302);
+        done();
+      });
+    });
+
+    it("should update the flair with the given values", (done) => {
+        const options = {
+          url: `${base}/${this.topic.id}/posts/${this.post.id}/flairs/update`,
+          form: {
+            name: "News"
+          }
+        };
+        request.post(options,
+          (err, res, body) => {
+
+          expect(err).toBeNull();
+
+          Flair.findOne({
+            where: {id: this.flair.id}
+          })
+          .then((post) => {
+            expect(flair.name).toBe("News");
+            done();
+          });
+        });
     });
 
   });

@@ -5,8 +5,9 @@ const flairController = require("../controllers/flairController");
 
 router.get("/topics/:topicId/posts/:postId/new", flairController.new);
 router.post("/topicsFlair/:topicId/posts/:postId/create", flairController.create);
-router.get("/topics/:topicId/posts/:id", flairController.show);
+router.get("/topics/:topicId/posts/:id/flair/:id", flairController.show);
 router.post("/topicsFlair/:topicId/posts/:postId/destroy", flairController.destroy);
-router.get("/topics/:topicId/posts/:id/flairs/:id/edit", flairController.edit);
+router.get("/topics/:topicId/posts/:postId/flair/:id/edit", flairController.edit);
+router.post("/topics/:postId/posts/:postId/flair/:id/update", flairController.update);
 
 module.exports = router;
