@@ -43,7 +43,7 @@ module.exports = {
           if(!post){
             return callback("Post not found");
           }
-          console.log(updatedPost);
+          
           post.update(updatedPost, {
             fields: Object.keys(updatedPost)
           })
