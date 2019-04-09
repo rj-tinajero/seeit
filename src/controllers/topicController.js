@@ -21,7 +21,6 @@ module.exports = {
         }
     },
     create(req, res, next) {
-        console.log("Inside topic controller");
         const authorized = new Authorizer(req.user).create();
         if(authorized) {
             let newTopic = {
