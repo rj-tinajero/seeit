@@ -42,23 +42,21 @@ module.exports = {
         });
       },
       destroy(req, res, next){
-        postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
-          if(err){ 
-            console.log(err);
-            res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
-          } else {
-            const authorized = new Authorizer(req.user).destroy();
-            if(authorized) {
-              console.log("im here");
-              res.redirect(303, `/topics/${req.params.topicId}`);
+        const authorized = new Authorizer(req.user).destroy();
+        if(authorized) {
+          postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
+            if(err){ 
+              console.log(err);
+              res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
             } else {
-              console.log("im here in else");
-              req.flash("notice", "You are not authorized to do that.");
-              res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
-            }
-            
-          }
-        });
+              res.redirect(303, `/topics/${req.params.topicId}`);
+            } 
+          });
+        } else { 
+          req.flash("notice", "You are not authorized to do that.");
+          res.redirect(`/topics/${req.params.topicId}/posts/${req.params.id}`);
+        }
+        
       },
       edit(req, res, next){
         postQueries.getPost(req.params.id, (err, post) => {
