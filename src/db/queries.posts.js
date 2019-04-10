@@ -1,7 +1,6 @@
 const Post = require("./models").Post;
 const Topic = require("./models").Topic;
 const Flair = require("./models").Flair;
-const Authorizer = require("../policies/post");
 
 module.exports = {
     addPost(newPost, callback) {
@@ -27,44 +26,33 @@ module.exports = {
           callback(err);
         })
     },
-    deletePost(id, req, callback){
+    deletePost(id, callback){
         return Post.destroy({
           where: { id }
         })
         .then((deletedRecordsCount) => {
-          const authorized = new Authorizer(req.user, post).destroy();
-          if(authorized) {
-            callback(null, deletedRecordsCount);
-          } else {
-            req.flash("notice", "You are not authorized to do that.")
-            callback(401);
-          }
+          callback(null, deletedRecordsCount);
         })
         .catch((err) => {
           callback(err);
         })
       },
-      updatePost(id, req, updatedPost, callback){
+      updatePost(id, updatedPost, callback){
         return Post.findById(id)
         .then((post) => {
           if(!post){
             return callback("Post not found");
           }
-          const authorized = new Authorizer(req.user, post).update();
-          if(authorized) {
-            post.update(updatedPost, {
-              fields: Object.keys(updatedPost)
-            })
-            .then(() => {
-              callback(null, post);
-            })
-            .catch((err) => {
-              callback(err);
-            });
-          } else {
-            req.flash("notice", "You are not authorized to do that.");
-            callback("Forbidden");
-          }
+          
+          post.update(updatedPost, {
+            fields: Object.keys(updatedPost)
+          })
+          .then(() => {
+            callback(null, post);
+          })
+          .catch((err) => {
+            callback(err);
+          });
         });
       }
    

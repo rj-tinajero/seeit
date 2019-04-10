@@ -31,8 +31,8 @@ module.exports = (sequelize, DataTypes) => {
   User.prototype.isMember = function() {
     return this.role === "member";
   };
-  User.prototype.isOwner = function() {
-    return this.user.id === this.post.userId;
+  User.prototype.isOwner = function(post) {
+    return this.id === post.userId;
   };
   User.prototype.isGuest = function() {
     return !this.role;

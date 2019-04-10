@@ -48,6 +48,10 @@ describe("routes : posts", () => {
 
 
   describe("guest user perform CRUD actions for Post" , () => {
+    beforeEach((done) => {
+      request.get("http://localhost:3000/users/sign_out", () => 
+      done());
+    });
 
     describe("GET /topics/:topicId/posts/new", () => {
 
@@ -103,17 +107,20 @@ describe("routes : posts", () => {
 
     describe("POST /topics/:topicId/posts/:id/destroy", () => {
       it("should not delete the post with the associated ID", (done) => {
-        expect(this.post.id).toBe(1);
+        Post.all()
+        .then((posts) => {
+          const postCountBeforeDelete = posts.length;
+          expect(postCountBeforeDelete).toBe(1);
+        
   
         request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
-          Post.findById(1)
-          .then((post) => {
-            expect(err).toBeNull();
-            expect(post).not.toBeNull();
+          Post.all()
+          .then((posts) => {
+            expect(posts.length).toBe(postCountBeforeDelete);
             done();
           })
         });
-  
+        })
       });
   
     });
@@ -165,16 +172,13 @@ describe("routes : posts", () => {
         form: {
           role: "member"
         }
-      },
-      (err, res, req) => {
-        done();
-      }
-      );
+      });
+      done();
     });
-    afterEach((done) => {
-      request.get("http://localhost:3000/users/sign_out", () => 
-      done());
-    });
+    // afterEach((done) => {
+    //   request.get("http://localhost:3000/users/sign_out", () => 
+    //   done());
+    // });
 
     describe("GET /topics/:topicId/posts/new", () => {
 
@@ -513,5 +517,5 @@ describe("routes : posts", () => {
 
   });
 
-  
 });
+
