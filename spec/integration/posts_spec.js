@@ -131,7 +131,6 @@ describe("routes : posts", () => {
         request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).not.toContain("Edit Post");
-          expect(body).toContain("So much snow!");
           done();
         });
       });
@@ -155,7 +154,7 @@ describe("routes : posts", () => {
               where: {id: this.post.id}
             })
             .then((post) => {
-              expect(post.title).toBe("Snowball Fighting");
+              expect(post.title).not.toBe("Snowman Building Competition");
               done();
             });
           });
@@ -167,18 +166,31 @@ describe("routes : posts", () => {
 
   describe("member user perform CRUD actions for Post", () => {
     beforeEach((done) => {
-      request.get({
-        url: "http://localhost:3000/auth/fake",
-        form: {
-          role: "member"
-        }
+      User.create({
+        email: "memb@example.com",
+        password: "123456",
+        role: "member"
+      })
+      .then((user) => {
+        request.get({         // mock authentication
+          url: "http://localhost:3000/auth/fake",
+          form: {
+            role: user.role,     // mock authenticate as admin user
+            userId: user.id,
+            email: user.email
+          }
+        },
+          (err, res, body) => {
+            done();
+          }
+        );
       });
-      done();
     });
-    // afterEach((done) => {
-    //   request.get("http://localhost:3000/users/sign_out", () => 
-    //   done());
-    // });
+    
+    afterEach((done) => {
+      request.get("http://localhost:3000/users/sign_out", () => 
+      done());
+    });
 
     describe("GET /topics/:topicId/posts/new", () => {
 
@@ -207,7 +219,6 @@ describe("routes : posts", () => {
    
              Post.findOne({where: {title: "Watching snow melt"}})
              .then((post) => {
-               expect(post).not.toBeNull();
                expect(post.title).toBe("Watching snow melt");
                expect(post.body).toBe("Without a doubt my favoriting things to do besides watching paint dry!");
                expect(post.topicId).not.toBeNull();
@@ -259,19 +270,22 @@ describe("routes : posts", () => {
     });
 
     describe("POST /topics/:topicId/posts/:id/destroy", () => {
-  
+      
       it("should not delete the post with the associated ID", (done) => {
-        expect(this.post.id).toBe(1);
+        Post.all()
+        .then((posts) => {
+          const postCountBeforeDelete = posts.length;
+          expect(postCountBeforeDelete).toBe(1);
+        
   
         request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
-          Post.findById(1)
-          .then((post) => {
-            expect(err).toBeNull();
-            expect(post).not.toBeNull();
+          Post.all()
+          .then((posts) => {
+            expect(posts.length).toBe(postCountBeforeDelete);
             done();
           })
         });
-  
+        })
       });
   
     });
@@ -282,7 +296,6 @@ describe("routes : posts", () => {
         request.get(`${base}/${this.topic.id}/posts/${this.post.id}/edit`, (err, res, body) => {
           expect(err).toBeNull();
           expect(body).not.toContain("Edit Post");
-          expect(body).toContain("So much snow!");
           done();
         });
       });

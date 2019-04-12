@@ -1,6 +1,7 @@
 const Post = require("./models").Post;
 const Topic = require("./models").Topic;
 const Flair = require("./models").Flair;
+const Authorizer = require("../policies/post");
 
 module.exports = {
     addPost(newPost, callback) {
@@ -43,7 +44,7 @@ module.exports = {
           if(!post){
             return callback("Post not found");
           }
-          
+
           post.update(updatedPost, {
             fields: Object.keys(updatedPost)
           })

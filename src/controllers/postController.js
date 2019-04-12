@@ -42,7 +42,8 @@ module.exports = {
         });
       },
       destroy(req, res, next) {
-        const authorized = new Authorizer(req.user).destroy();
+        const authorized = new Authorizer(req.user, req.user.id).destroy();
+
         if(authorized) {
           console.log("ok you authorized now");
           postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
