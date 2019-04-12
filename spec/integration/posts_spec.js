@@ -276,8 +276,6 @@ describe("routes : posts", () => {
         .then((posts) => {
           const postCountBeforeDelete = posts.length;
           expect(postCountBeforeDelete).toBe(1);
-        
-  
         request.post(`${base}/${this.topic.id}/posts/${this.post.id}/destroy`, (err, res, body) => {
           Post.all()
           .then((posts) => {

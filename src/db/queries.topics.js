@@ -63,7 +63,7 @@ module.exports = {
             return callback("Topic not found");
           }
           const authorized = new Authorizer(req.user, topic).update();
-          if(authorized){
+          if(authorized) {
             topic.update(updatedTopic, {
                 fields: Object.keys(updatedTopic)
               })

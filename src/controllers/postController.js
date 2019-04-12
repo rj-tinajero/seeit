@@ -42,11 +42,11 @@ module.exports = {
         });
       },
       destroy(req, res, next) {
-        const authorized = new Authorizer(req.user, req.user.id).destroy();
+        const authorized = new Authorizer(req.user.id, post).destroy();
 
         if(authorized) {
           console.log("ok you authorized now");
-          postQueries.deletePost(req.params.id, (err, deletedRecordsCount) => {
+          postQueries.deletePost(req, req.params.id, (err, post) => {
             if(err) { 
               console.log(err);
               res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.id}`)
