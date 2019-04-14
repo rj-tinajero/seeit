@@ -75,7 +75,9 @@ module.exports = {
               });
           } else {
               req.flash("notice", "You are not authorized to do that.");
+              console.log("yo");
               callback("Forbidden");
+              
           }
         });
       }
