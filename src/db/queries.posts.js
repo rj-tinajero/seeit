@@ -41,7 +41,7 @@ module.exports = {
     deletePost(req, id, callback) {
       return Post.findById(req.params.id)
       .then((post) => {
-        const authorized = new Authorizer(req.user, post).destroy();
+        const authorized = new Authorizer(req.user, post.userId).destroy();
         if(authorized) {
           post.destroy()
           .then((res) => {
@@ -63,7 +63,8 @@ module.exports = {
           if(!post){
             return callback("Post not found");
           }
-          const authorized = new Authorizer(req.user.id, post).update();
+          const authorized = new Authorizer(req.user, post).update();
+          
           if(authorized) {
             post.update(updatedPost, {
               fields: Object.keys(updatedPost)

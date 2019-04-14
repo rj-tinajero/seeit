@@ -9,7 +9,7 @@ module.exports = class ApplicationPolicy {
     // #2
      _isOwner() {
        
-       return this.record && (this.record.userId == this.user.id);
+       return this.record && (this.record == this.user.id);
      }
    
      _isAdmin() {

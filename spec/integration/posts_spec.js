@@ -327,28 +327,6 @@ describe("routes : posts", () => {
 
   });
 
-  describe("owner user perform CRUD actions for their Post", () => {
-    beforeEach((done) => {
-      request.get({
-          url: "http://localhost:3000/auth/fake",
-          form: {
-            role: req.user.id,
-            userId: user.id,
-            email: user.email
-          }
-      },
-      (err, res, body) => {
-        done();
-      });
-    });
-    afterEach((done) => {
-      request.get("http://localhost:3000/users/sign_out", () => 
-      done());
-    });
-
-
-  });
-
   describe("admin user perform CRUD actions for Post", () => {
     beforeEach((done) => {
       User.create({

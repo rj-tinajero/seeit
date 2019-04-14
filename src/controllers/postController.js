@@ -42,8 +42,8 @@ module.exports = {
         });
       },
       destroy(req, res, next) {
-        const authorized = new Authorizer(req.user.id, post).destroy();
-
+        const authorized = new Authorizer(req.user, req.user.id).destroy();
+        
         if(authorized) {
           console.log("ok you authorized now");
           postQueries.deletePost(req, req.params.id, (err, post) => {
@@ -80,8 +80,6 @@ module.exports = {
       update(req, res, next) {
         postQueries.updatePost(req, req.body, (err, post) => {
           if(err || post == null) { 
-            console.log("some err in controller");
-
             res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.id}/edit`);
           } else {
             console.log("it worked?");
