@@ -18,13 +18,13 @@ module.exports = {
     return Comment.findById(req.params.id)
     .then((comment) => {
       const authorized = new Authorizer(req.user, comment).destroy();
-    
+        console.log(authorized);
       if(authorized){
         comment.destroy();
         callback(null, comment)
       } else {
         req.flash("notice", "You are not authorized to do that.")
-        callback(401)
+        callback(401);
       }
     })
   }

@@ -133,10 +133,10 @@ describe("guest attempting to perform CRUD actions for Comment", () => {
                    expect(err).toBeNull();
                    expect(comments.length).toBe(commentCountBeforeDelete);
                    done();
-                 })
+                 });
     
                });
-             })
+             });
            });
          });
        });
@@ -187,6 +187,45 @@ describe("guest attempting to perform CRUD actions for Comment", () => {
       });
     });
 
+   describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+     it("should not delete the comment of another user", (done) => {
+      User.create({               // create an unassociated user
+        email: "bob@example.com",
+        password: "password"
+      })
+      .then((newUser) => {        // pass the user down
+
+        expect(this.comment.userId).toBe(this.user.id); // confirm the comment belongs to another user
+        this.comment.setUser(newUser)                   // then reassign it
+        .then((comment) => {
+
+          expect(comment.userId).toBe(newUser.id);      // confirm the values persisted
+        });
+        Comment.all()
+        .then((comments) => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          expect(comments[0].id).toBe(this.comment.id); 
+          request.post(
+           `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+            expect(err).toBeNull();
+            Comment.all()
+            .then((comments) => {
+              expect(comments.length).toBe(commentCountBeforeDelete);
+              done();
+            })
+            .catch((err) => {
+              console.log(err);
+              done();
+            })
+          
+          });
+        })
+     })
+     
+   })
+
 // #3
     describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
 
@@ -203,7 +242,7 @@ describe("guest attempting to perform CRUD actions for Comment", () => {
             expect(err).toBeNull();
             Comment.all()
             .then((comments) => {
-            console.log("anything");
+            
               expect(comments.length).toBe(commentCountBeforeDelete - 1);
               done();
             })
@@ -217,4 +256,54 @@ describe("guest attempting to perform CRUD actions for Comment", () => {
 
   }); //end context for signed in user
 
+  describe("admin performing CRUD actions on Comment", () => {
+    beforeEach((done) => {
+      User.create({
+        email: "admin@example.com",
+        password: "123456",
+        role: "admin"
+      })
+      .then((user) => {
+        request.get({
+          url: "http://localhost:3000/auth/fake",
+          form: {
+            role: user.role,
+            userId: user.id,
+            email: user.email
+          }
+        },
+        (err, res, body) => {
+          done();
+        })
+      });
+    });
+
+    describe("POST /topics/:topicId/posts/:postId/comments/:id/destroy", () => {
+      it("should delete another member users comment", (done) => {
+        Comment.all()
+        .then((comments) => {
+          const commentCountBeforeDelete = comments.length;
+          expect(commentCountBeforeDelete).toBe(1);
+          expect(comments[0].id).toBe(this.comment.id); 
+          request.post(
+           `${base}${this.topic.id}/posts/${this.post.id}/comments/${this.comment.id}/destroy`,
+            (err, res, body) => {
+            expect(res.statusCode).toBe(302);
+            expect(err).toBeNull();
+            Comment.all()
+            .then((comments) => {
+            
+              expect(comments.length).toBe(commentCountBeforeDelete - 1);
+              done();
+            });
+
+          });
+      })
+    })
+
+  });
+
+
+  });
+  });
 });
