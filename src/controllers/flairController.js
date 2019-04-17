@@ -33,7 +33,7 @@ module.exports = {
     },
     show(req, res, next) {
         console.log("flairController");
-        console.log(req.params.id);
+        
         flairQueries.getFlair(req.params.id, (err, flair) => {
             if(err || flair == null) {
                 res.redirect(404, "/");
@@ -45,7 +45,7 @@ module.exports = {
     destroy(req, res, next) {
         console.log("flairController");
         flairQueries.deleteFlair(req.params.id, (err, deletedRecordsCount) => {
-            console.log(req.params);
+            
             if(err) {
                 res.redirect(500, `/topics/${req.params.topicId}/posts/${req.params.postId}`)
             } else {
@@ -55,10 +55,10 @@ module.exports = {
     },
     update(req, res, next){
         flairQueries.updateFlair(req.params.id, req.body, (err, flair) => {
-            console.log(req.body);
+            
             console.log("flairController");
           if(err || flair == null){
-              console.log(flair);
+              
             res.redirect(404, `/topics/${req.params.topicId}/posts/${req.params.postId}/flair/${req.params.id}/edit`);
           } else {
             res.redirect(`/topics/${req.params.topicId}/posts/${req.params.postId}/flair/${req.params.id}`);

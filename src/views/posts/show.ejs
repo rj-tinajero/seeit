@@ -7,7 +7,16 @@
     <% include ../static/partials/navbar.ejs %>
 
     <main class="container">
-      <h1><%= post.title %></h1>
+      <% include ../static/partials/messages.ejs %>
+      
+      <div style="display: flex; align-items: center;">
+        <% if(currentUser) { %>
+          <% include ../votes/voting.ejs %>
+        <% } %>
+        <h1><%= post.title %></h1>
+      </div>
+
+      
       <ul class="list-group">
         <% post.flairs.forEach((flair) => {  %>
           <li class="list-group-item">
@@ -21,7 +30,7 @@
       
       <p><%= post.body %></p>
       <% if(currentUser) { %>
-        <% if(currentUser.isAdmin() || currentUser.isOwner(post) ){ %>
+        <% if(currentUser.isAdmin() || currentUser.isOwner(post)) { %>
         <a href="/topics/<%= post.topicId %>/posts/<%= post.id %>/edit" class="btn btn-warning">Edit</a>
         <form style="display:initial" action="/topics/<%= post.topicId %>/posts/<%= post.id %>/destroy" method="post">
           <button type="submit" class="btn btn-danger">Delete</button>
@@ -30,8 +39,10 @@
       <% } %>
 
       <section id="comment-form">
-           <% if(currentUser) { %>
+          <% if(currentUser) { %>
              <% include ../comments/new.ejs %>
+           <% } else { %>
+             <h6>Sign Up to leave comments and engage with our community!</h6>
            <% } %>
           </section>
           <section id="comment-list">
