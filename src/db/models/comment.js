@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: "userId",
       onDelete: "CASCADE"
     })
-  };
+  
   Comment.addScope("lastFiveFor", (userId) => {
     return {
       include: [{
@@ -35,6 +35,6 @@ module.exports = (sequelize, DataTypes) => {
       order: [["createdAt", "DESC"]]
     }
   });
-  
+};
   return Comment;
 };
