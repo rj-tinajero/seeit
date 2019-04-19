@@ -53,5 +53,8 @@ module.exports = (sequelize, DataTypes) => {
   Post.prototype.hasDownvoteFor = function(vote, user) {
     return vote.value === -1 && user.id === vote.userId;
   };
+  Post.prototype.getFavoriteFor = function(userId) {
+    return this.favorites.find((favorite) => { return favorite.userId == userId });
+  };
   return Post;
 };
