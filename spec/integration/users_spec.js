@@ -146,10 +146,11 @@ describe("GET /users/:id", () => {
 
   });
 
-  it("should present a list of comments and posts a user has created", (done) => {
+  it("should present a list of comments and posts a user has created and favorited", (done) => {
     request.get(`${base}${this.user.id}`, (err, res, body) => {
       expect(body).toContain("Snowball Fighting");
-      expect(body).toContain("This comment is alright.")
+      expect(body).toContain("This comment is alright.");
+      expect(body).toContain("Favorited Posts")
       done();
     });
 
